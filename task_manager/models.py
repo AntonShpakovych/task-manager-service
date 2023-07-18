@@ -8,6 +8,9 @@ from task_manager.managers import CustomUserManager
 class Position(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Employee(AbstractUser):
     position = models.ForeignKey(
@@ -24,6 +27,9 @@ class Employee(AbstractUser):
 
 class TaskType(models.Model):
     name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Task(models.Model):
@@ -53,3 +59,6 @@ class Task(models.Model):
         related_name="tasks"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.name
