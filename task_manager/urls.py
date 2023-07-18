@@ -1,7 +1,7 @@
 from django.urls import path
-from task_manager.views import index
+from task_manager.views import TaskListView
 
 
-urlpatterns = [path("", index, name="index")]
+urlpatterns = [path("", TaskListView.as_view(), name="task-list")]
 
 app_name = "task_manager"
