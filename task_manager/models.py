@@ -2,6 +2,8 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from task_manager.managers import CustomUserManager
+
 
 class Position(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -9,8 +11,11 @@ class Position(models.Model):
 
 class Employee(AbstractUser):
     position = models.ForeignKey(
-        Position, on_delete=models.CASCADE, related_name="employees"
+        Position,
+        on_delete=models.CASCADE,
+        related_name="employees",
     )
+    objects = CustomUserManager()
 
     class Meta:
         verbose_name = "employee"
