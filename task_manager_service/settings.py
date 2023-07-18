@@ -83,6 +83,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
+
 AUTH_USER_MODEL = "task_manager.Employee"
 
 LANGUAGE_CODE = "en-us"
