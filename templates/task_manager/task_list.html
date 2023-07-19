@@ -1,5 +1,62 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  {{ task_list }}
+  <div class="content-page">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
+                <h5>Task <board></board></h5>
+                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                  <div class="dropdown status-dropdown mr-3">
+                    <div class="dropdown-toggle" id="dropdownMenuButton03" data-toggle="dropdown">
+                      <div class="btn bg-body"><span class="h6">Status :</span> In Progress<i class="ri-arrow-down-s-line ml-2 mr-0"></i></div>
+                    </div>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton03">
+                        <a class="dropdown-item" href="#"><i class="ri-mic-line mr-2"></i>In Progress</a>
+                        <a class="dropdown-item" href="#"><i class="ri-attachment-line mr-2"></i>Priority</a>
+                        <a class="dropdown-item" href="#"><i class="ri-file-copy-line mr-2"></i>Category</a>
+                    </div>
+                  </div>
+                  <div class="pl-3 btn-new border-left">
+                    <a href="#" class="btn btn-primary" data-target="#new-project-modal" data-toggle="modal">New Task</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="grid" class="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
+        <div class="row">
+          {% for task in task_list %}
+            <div class="col-lg-4">
+              <div class="card-transparent mb-4 desk-info">
+                <div class="card-body p-0">
+                  <div class="card">
+                    <div class="card-body " style="position: relative">
+                      <h5 class="mb-3">{{ task.name|truncatechars:10 }}</h5>
+                      <p class="mb-3"><i class="las la-calendar-check mr-2"></i>Opened: {{ task.created_at }}</p>
+                      <p class="mb-3"><i class="las la-calendar-check mr-2"></i>Deadline: {{ task.deadline }}</p>
+                      <p class="mb-3"><i class="las la-calendar-check mr-2"></i>Priority: {{ task.get_priority_display }}</p>
+                      <p class="mb-3"><i class="las la-calendar-check mr-2"></i>Completed: {{ task.is_completed }}</p>
+
+                      <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                          <a href="#" class="btn bg-secondary">{{ task.task_type }}</a>
+                        </div>
+                        <button class="btn btn-primary" style="position: absolute; top: 5px; right: 5px;">Detail view</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

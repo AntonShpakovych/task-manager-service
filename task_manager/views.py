@@ -5,11 +5,5 @@ from django.views import generic
 from task_manager.models import Task
 
 
-# @login_required
-# def index(request):
-#     return render(request, "task_manager/index.html")
-
-
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
-
