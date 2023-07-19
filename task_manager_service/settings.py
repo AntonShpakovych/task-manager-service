@@ -23,6 +23,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "debug_toolbar",
+    "crispy_bootstrap4",
+    "crispy_forms",
     "task_manager",
 ]
 
@@ -54,6 +56,8 @@ TEMPLATES = [
         },
     },
 ]
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 WSGI_APPLICATION = "task_manager_service.wsgi.application"
 
@@ -90,7 +94,7 @@ AUTH_USER_MODEL = "task_manager.Employee"
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 

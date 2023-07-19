@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -34,20 +36,17 @@ class TaskType(models.Model):
 
 class Task(models.Model):
     PRIORITY_CHOICES = (
-        ('LW', 'Lowest'),
-        ('L', 'Low'),
-        ('M', 'Medium'),
-        ('H', 'High'),
-        ('HG', 'Highest'),
+        (0, "Low"),
+        (1, "Medium"),
+        (2, "High"),
     )
 
     name = models.CharField(max_length=255)
     description = models.TextField()
     deadline = models.DateTimeField()
     is_completed = models.BooleanField(default=False)
-    priority = models.CharField(
-        max_length=2,
-        choices=PRIORITY_CHOICES
+    priority = models.IntegerField(
+        choices=PRIORITY_CHOICES,
     )
     task_type = models.ForeignKey(
         TaskType,
