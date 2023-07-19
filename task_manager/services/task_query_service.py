@@ -1,10 +1,10 @@
 import datetime
 import pytz
 
-from django.db.models.query import QuerySet
+from task_manager.services.query_service_base import QueryServiceBase
 
 
-class TaskQueryService:
+class TaskQueryService(QueryServiceBase):
     VALID_OPTIONS = {
         "priority_asc": lambda queryset: queryset.order_by("priority"),
         "priority_desc": lambda queryset: queryset.order_by("-priority"),
@@ -21,14 +21,3 @@ class TaskQueryService:
         "deadline_desc": lambda queryset: queryset.order_by("-deadline"),
         "deadline_asc": lambda queryset: queryset.order_by("deadline")
     }
-
-    def __init__(self, queryset: QuerySet, option: str) -> None:
-        self.option = option
-        self.queryset = queryset
-
-    def run_query(self) -> QuerySet:
-        return TaskQueryService.VALID_OPTIONS[self.option](self.queryset)
-
-    @classmethod
-    def is_option_valid(cls, option) -> bool:
-        return option in TaskQueryService.VALID_OPTIONS
