@@ -96,7 +96,7 @@ AUTH_USER_MODEL = "employee.Employee"
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Europe/Kiev'
+TIME_ZONE = "Europe/Kiev"
 
 USE_I18N = True
 

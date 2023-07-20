@@ -106,12 +106,17 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        self.queryset = Position.objects.annotate(employee_count=Count("employees"))
+        self.queryset = Position.objects.annotate(
+            employee_count=Count("employees")
+        )
 
         option = self.request.GET.get("sort")
 
         if PositionQueryService.is_option_valid(option):
-            self.queryset = PositionQueryService(self.queryset, option).run_query()
+            self.queryset = PositionQueryService(
+                self.queryset,
+                option
+            ).run_query()
 
         form = PositionNameSearchForm(self.request.GET)
 
@@ -121,10 +126,6 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
             )
 
         return self.queryset
-
-
-class PositionDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Position
 
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):

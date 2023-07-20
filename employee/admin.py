@@ -26,7 +26,7 @@ class EmployeeAdmin(UserAdmin):
     )
     list_filter = UserAdmin.list_filter + ("position", )
 
-    @admin.display(ordering='position__name', description='Position')
+    @admin.display(ordering="position__name", description="Position")
     def get_position(self, obj):
         return obj.position.name
 

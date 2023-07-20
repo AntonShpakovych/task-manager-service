@@ -32,7 +32,9 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        self.queryset = Task.objects.select_related("task_type").prefetch_related("assignees")
+        self.queryset = Task.objects.select_related(
+            "task_type"
+        ).prefetch_related("assignees")
 
         option = self.request.GET.get("sort")
 
@@ -51,7 +53,9 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
-    queryset = Task.objects.select_related("task_type").prefetch_related("assignees")
+    queryset = Task.objects.select_related(
+        "task_type"
+    ).prefetch_related("assignees")
 
 
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -93,7 +97,10 @@ class TaskTypeListView(LoginRequiredMixin, generic.ListView):
         option = self.request.GET.get("sort")
 
         if TaskTypeQueryService.is_option_valid(option):
-            self.queryset = TaskTypeQueryService(self.queryset, option).run_query()
+            self.queryset = TaskTypeQueryService(
+                self.queryset,
+                option
+            ).run_query()
 
         form = TaskTypeNameSearchForm(self.request.GET)
 
