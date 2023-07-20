@@ -20,17 +20,19 @@
       <link rel="stylesheet" href="{% static 'vendor/tui-calendar/tui-time-picker/dist/tui-time-picker.css' %}">
   </head>
   <body class="  ">
-    {% include 'includes/sidebar.html' %}
-    <div class="content-page">
-      <div class="container-fluid">
-        {% block content %}{% endblock %}
-        {% block pagination %}
-          {% include "includes/pagination.html" %}
-        {% endblock %}
+    {% if request.path == "/accounts/login/" %}
+      {% block login %} {% endblock %}
+    {% else %}
+      {% include 'includes/sidebar.html' %}
+      <div class="content-page">
+        <div class="container-fluid">
+          {% block content %}{% endblock %}
+          {% block pagination %}
+            {% include "includes/pagination.html" %}
+          {% endblock %}
+        </div>
       </div>
-    </div>
-    {% if not request.path|slice:"1:" == "login" %}
-        {% include 'includes/footer.html' %}
+      {% include 'includes/footer.html' %}
     {% endif %}
     <script src="{% static 'js/backend-bundle.min.js' %}"></script>
     <script src="{% static 'js/app.js' %}"></script>

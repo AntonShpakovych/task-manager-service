@@ -8,6 +8,19 @@ from django.core.exceptions import ValidationError
 from task_manager.models import Task, TaskType
 
 
+class TaskNameSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                'class': 'text search-input', 'placeholder': 'Searching by task name'
+            }
+        )
+    )
+
+
 class TaskFormCreate(forms.ModelForm):
     assignees = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
@@ -21,7 +34,7 @@ class TaskFormCreate(forms.ModelForm):
 
     task_type = forms.ModelChoiceField(
         queryset=TaskType.objects.all(),
-        widget= forms.RadioSelect
+        widget=forms.RadioSelect
     )
 
     priority = forms.ChoiceField(widget=forms.RadioSelect, choices=Task.PRIORITY_CHOICES)

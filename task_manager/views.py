@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from task_manager.models import Task, TaskType
-from task_manager.forms import TaskFormCreate, TaskFormUpdate
+from task_manager.forms import TaskFormCreate, TaskFormUpdate, TaskNameSearchForm
 from task_manager.services.task_query_service import TaskQueryService
 from task_manager.services.task_type_query_service import TaskTypeQueryService
 
@@ -13,8 +13,25 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     paginate_by = 6
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        name = self.request.GET.get("name", "")
+        context["search_form"] = TaskNameSearchForm(
+            initial={"name": name}
+        )
+
+        return context
+
     def get_queryset(self):
         self.queryset = Task.objects.select_related("task_type").prefetch_related("assignees")
+
+        form = TaskNameSearchForm(self.request.GET)
+
+        if form.is_valid():
+            return self.queryset.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
 
         option = self.request.GET.get("sort")
 

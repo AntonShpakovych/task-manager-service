@@ -8028,6 +8028,8 @@ body.sidebar-main .iq-top-navbar {
   box-shadow: 0px 2px 8px 0px rgba(76, 128, 178, 0.1); }
 
 .iq-search-bar .search-link {
+  border-color: white;
+  padding: 0px;
   position: absolute;
   right: 0;
   left: auto;
@@ -8242,9 +8244,16 @@ body.sidebar-main .iq-top-navbar {
   .navbar-list li:last-child > a {
     padding: 0 0 0 20px; } }
 
-@media (max-width: 991px) {
+@media (max-width: 570px) {
   .device-search {
+    padding-bottom: 15px;
+  }
+  .search-content {
     display: none; }
+  .navbar-list li:last-child > a {
+    padding: 0 0 0 20px; } }
+
+@media (max-width: 991px) {
   .navbar-collapse {
     position: absolute;
     top: 100%;
