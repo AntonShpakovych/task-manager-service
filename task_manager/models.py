@@ -26,7 +26,7 @@ class Employee(AbstractUser):
 
 
 class TaskType(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=10, unique=True)
 
     def __str__(self) -> str:
         return self.name

@@ -10,7 +10,7 @@ from task_manager.models import Task, TaskType
 
 class TaskNameSearchForm(forms.Form):
     name = forms.CharField(
-        max_length=255,
+        max_length=25,
         required=False,
         label="",
         widget=forms.TextInput(
@@ -19,6 +19,15 @@ class TaskNameSearchForm(forms.Form):
             }
         )
     )
+
+
+class TaskTypeNameSearchForm(forms.ModelForm):
+    class Meta:
+        model = TaskType
+        fields = "__all__"
+        widgets = {
+            "name": forms.TextInput(attrs={'class': 'text search-input', 'placeholder': 'Searching by task name'})
+        }
 
 
 class TaskFormCreate(forms.ModelForm):

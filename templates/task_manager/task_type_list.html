@@ -17,6 +17,12 @@
                     <a class="dropdown-item" href="?sort=quantity_task_asc"><i class="ri-attachment-line mr-2"></i>Quantity task: Lowest to Highest</a>
                   </div>
               </div>
+              <div class="iq-search-bar device-search" style="padding-right: 10px">
+                <form action="" class="searchbox" method="get" novalidate>
+                    {{ search_form.name }}
+                    <button class="search-link"><i class="ri-search-line"></i></button>
+                </form>
+              </div>
               <a href="{% url 'task-manager:task-type-create' %}" class="btn btn-primary">New task type</a>
             </div>
           </div>
