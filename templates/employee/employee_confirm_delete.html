@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="button-group">
+    <h1>Delete employee?</h1>
+    <form action="" method="post">
+      {% csrf_token %}
+      <input type="submit" value="Delete" class="btn btn-danger">
+      <a class="btn btn-success" href="{% url 'employee:employee-list' %}">Cancel</a>
+    </form>
+
+  </div>
+{% endblock %}

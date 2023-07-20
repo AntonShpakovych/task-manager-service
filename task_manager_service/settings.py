@@ -25,7 +25,9 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "crispy_bootstrap4",
     "crispy_forms",
-    "task_manager",
+
+    "task",
+    "employee",
 ]
 
 MIDDLEWARE = [
@@ -90,7 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/accounts/login/"
 
-AUTH_USER_MODEL = "task_manager.Employee"
+AUTH_USER_MODEL = "employee.Employee"
 
 LANGUAGE_CODE = "en-us"
 

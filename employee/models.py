@@ -1,0 +1,24 @@
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+from employee.managers import CustomUserManager
+
+
+class Position(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class Employee(AbstractUser):
+    position = models.ForeignKey(
+        Position,
+        on_delete=models.CASCADE,
+        related_name="employees",
+    )
+    objects = CustomUserManager()
+
+    class Meta:
+        verbose_name = "employee"
+        verbose_name_plural = "employees"
