@@ -9,7 +9,8 @@ class TaskQueryService(QueryServiceBase):
         "priority_asc": lambda queryset: queryset.order_by("priority"),
         "priority_desc": lambda queryset: queryset.order_by("-priority"),
         "deadline_failed": lambda queryset: queryset.filter(
-            deadline__lte=datetime.datetime.now(pytz.utc)
+            deadline__lte=datetime.datetime.now(pytz.utc),
+            is_completed=False
         ),
         "in_progress": lambda queryset: queryset.filter(
             is_completed=False,

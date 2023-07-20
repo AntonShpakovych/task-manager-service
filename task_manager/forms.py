@@ -3,9 +3,10 @@ import pytz
 
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
-from task_manager.models import Task, TaskType
+from task_manager.models import Task, TaskType, Employee
 
 
 class TaskNameSearchForm(forms.Form):
@@ -21,13 +22,17 @@ class TaskNameSearchForm(forms.Form):
     )
 
 
-class TaskTypeNameSearchForm(forms.ModelForm):
-    class Meta:
-        model = TaskType
-        fields = "__all__"
-        widgets = {
-            "name": forms.TextInput(attrs={'class': 'text search-input', 'placeholder': 'Searching by task name'})
-        }
+class TaskTypeNameSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=10,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                'class': 'text search-input', 'placeholder': 'Searching by task type name'
+            }
+        )
+    )
 
 
 class TaskFormCreate(forms.ModelForm):
@@ -64,3 +69,36 @@ class TaskFormUpdate(TaskFormCreate):
     class Meta(TaskFormCreate.Meta):
         exclude = tuple()
         fields = "__all__"
+
+
+class EmployeeCreateForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = Employee
+        fields = UserCreationForm.Meta.fields + (
+            "position", "first_name", "last_name", "email"
+        )
+        widgets = {
+            "position": forms.RadioSelect()
+        }
+
+
+class EmployeeUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = ("first_name", "last_name", "position", "email")
+
+
+class EmployeeUsernameSearchForm(forms.Form):
+    username = forms.CharField(
+        max_length=150,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Searching by username",
+                "type": "search",
+                "id": "exampleInputSearch"
+            }
+        )
+    )
