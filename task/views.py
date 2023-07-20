@@ -13,8 +13,8 @@ from task.forms import (
     TaskNameSearchForm,
     TaskTypeNameSearchForm,
 )
-from task.services.task_query_service import TaskQueryService
-from task.services.task_type_query_service import TaskTypeQueryService
+from services.task_query_service import TaskQueryService
+from services.task_type_query_service import TaskTypeQueryService
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):

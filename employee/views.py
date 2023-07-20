@@ -2,17 +2,19 @@ import datetime
 import pytz
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.urls import reverse_lazy
 from django.views import generic
 
+from services.position_query_service import PositionQueryService
 from task.models import Task
 
 from employee.forms import (
     EmployeeUsernameSearchForm,
     EmployeeCreateForm,
-    EmployeeUpdateForm
+    EmployeeUpdateForm, PositionNameSearchForm
 )
-from employee.models import Employee
+from employee.models import Employee, Position
 
 
 class EmployeeListView(LoginRequiredMixin, generic.ListView):
@@ -70,7 +72,8 @@ class EmployeeDetailView(LoginRequiredMixin, generic.DetailView):
 
         employee_tasks_with_status = {
             "completed": tasks.filter(
-                assignees__id=employee.id, is_completed=True
+                assignees__id=employee.id,
+                is_completed=True
             ),
             "failed": tasks.filter(
                 assignees__id=employee.id,
@@ -87,3 +90,55 @@ class EmployeeDetailView(LoginRequiredMixin, generic.DetailView):
         context["task_statuses"] = employee_tasks_with_status
 
         return context
+
+
+class PositionListView(LoginRequiredMixin, generic.ListView):
+    model = Position
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        name = self.request.GET.get("name", "")
+        context["search_form"] = PositionNameSearchForm(
+            initial={"name": name}
+        )
+
+        return context
+
+    def get_queryset(self):
+        self.queryset = Position.objects.annotate(employee_count=Count("employees"))
+
+        option = self.request.GET.get("sort")
+
+        if PositionQueryService.is_option_valid(option):
+            self.queryset = PositionQueryService(self.queryset, option).run_query()
+
+        form = PositionNameSearchForm(self.request.GET)
+
+        if form.is_valid():
+            return self.queryset.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
+
+        return self.queryset
+
+
+class PositionDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Position
+
+
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("employee:position-list")
+
+
+class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Position
+    success_url = reverse_lazy("employee:position-list")
+
+
+class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("employee:position-list")

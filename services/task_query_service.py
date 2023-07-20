@@ -1,7 +1,7 @@
 import datetime
 import pytz
 
-from task.services.query_service_base import QueryServiceBase
+from services.query_service_base import QueryServiceBase
 
 
 class TaskQueryService(QueryServiceBase):

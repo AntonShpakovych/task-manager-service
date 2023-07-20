@@ -5,36 +5,66 @@ from employee.views import (
     EmployeeDeleteView,
     EmployeeUpdateView,
     EmployeeDetailView,
-    EmployeeCreateView
+    EmployeeCreateView,
+    PositionListView,
+    PositionDetailView,
+    PositionCreateView,
+    PositionUpdateView,
+    PositionDeleteView
 )
 
 
 urlpatterns = [
     path(
-        "employees/",
+        "",
         EmployeeListView.as_view(),
         name="employee-list"
     ),
     path(
-        "employees/create/",
+        "create/",
         EmployeeCreateView.as_view(),
         name="employee-create"
     ),
     path(
-        "employees/<int:pk>/delete/",
+        "<int:pk>/delete/",
         EmployeeDeleteView.as_view(),
         name="employee-delete"
     ),
     path(
-        "employees/<int:pk>/update/",
+        "<int:pk>/update/",
         EmployeeUpdateView.as_view(),
         name="employee-update"
     ),
     path(
-        "employees/<int:pk>/detail/",
+        "<int:pk>/detail/",
         EmployeeDetailView.as_view(),
         name="employee-detail"
-    )
+    ),
+    path(
+        "positions/",
+        PositionListView.as_view(),
+        name="position-list"
+    ),
+    path(
+        "positions/<int:pk>/detail/",
+        PositionDetailView.as_view(),
+        name="position-detail"
+    ),
+    path(
+        "positions/create/",
+        PositionCreateView.as_view(),
+        name="position-create"
+    ),
+    path(
+        "positions/<int:pk>/update/",
+        PositionUpdateView.as_view(),
+        name="position-update"
+    ),
+    path(
+        "positions/<int:pk>/delete/",
+        PositionDeleteView.as_view(),
+        name="position-delete"
+    ),
 ]
 
 app_name = "employee"

@@ -3,6 +3,26 @@
 
 {% block content %}
 <div id="grid" class="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
+  <div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6">
+        <div class="card card-block card-stretch card-height">
+            <div class="card-body text-center p-0">
+                <div class="item">
+                    <div class="odr-content rounded">
+                        <h4 class="mb-2">Full name: {{ employee.get_full_name }}</h4>
+                        <div class="pt-3 border-top">
+                            <h6 class="mb-3">Email: {{ employee.email }}</h6>
+                            <h6 class="mb-3">Position: {{ employee.position }}</h6>
+                            <h6 class="mb-3">Staff: {{ employee.is_staff }}</h6>
+                            <h6 class="mb-3">Active: {{ employee.is_active }}</h6>
+                            <h6 class="mb-3">Date joined: {{ employee.date_joined }}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
   <div class="row">
     {% for status, tasks in task_statuses.items %}
       <div class="col-lg-4">
@@ -26,7 +46,8 @@
                             <p class="mb-3"><i class="las la-calendar-check mr-2"></i>02 / 02 / 2021</p>
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <a href="#" class="btn bg-warning-light">{{ task.task_type }}</a>
+                                    <button class="btn btn-light">{{ task.task_type }}</button>
+                                    <a href="{% url "task:task-detail" pk=task.id %}" class="btn btn-primary" style="position: absolute; top: 15px; right: 15px;">Detail view</a>
                                 </div>
                             </div>
                         </div>
