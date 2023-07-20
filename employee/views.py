@@ -114,8 +114,8 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
 
         if PositionQueryService.is_option_valid(option):
             self.queryset = PositionQueryService(
-                self.queryset,
-                option
+                queryset=self.queryset,
+                option=option
             ).run_query()
 
         form = PositionNameSearchForm(self.request.GET)

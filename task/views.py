@@ -39,7 +39,10 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         option = self.request.GET.get("sort")
 
         if TaskQueryService.is_option_valid(option):
-            self.queryset = TaskQueryService(self.queryset, option).run_query()
+            self.queryset = TaskQueryService(
+                queryset=self.queryset,
+                option=option
+            ).run_query()
 
         form = TaskNameSearchForm(self.request.GET)
 
@@ -98,8 +101,8 @@ class TaskTypeListView(LoginRequiredMixin, generic.ListView):
 
         if TaskTypeQueryService.is_option_valid(option):
             self.queryset = TaskTypeQueryService(
-                self.queryset,
-                option
+                queryset=self.queryset,
+                option=option
             ).run_query()
 
         form = TaskTypeNameSearchForm(self.request.GET)
