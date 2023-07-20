@@ -1,5 +1,5 @@
 from django.contrib import admin
-from task.models import TaskType, Task
+from task.models import TaskType, Task, Tag
 
 
 @admin.register(Task)
@@ -17,3 +17,4 @@ class TaskAdmin(admin.ModelAdmin):
 
 
 admin.site.register(TaskType)
+admin.site.register(Tag)

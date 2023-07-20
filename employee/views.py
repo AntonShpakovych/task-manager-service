@@ -2,6 +2,7 @@ import datetime
 import pytz
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.db.models import Count
 from django.urls import reverse_lazy
 from django.views import generic
@@ -67,21 +68,20 @@ class EmployeeDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        tasks = Task.objects.prefetch_related("assignees")
         employee = context["object"]
+        employee_tasks = Task.objects.prefetch_related("assignees").filter(
+            assignees__id=employee.id
+        )
 
         employee_tasks_with_status = {
-            "completed": tasks.filter(
-                assignees__id=employee.id,
+            "completed": employee_tasks.filter(
                 is_completed=True
             ),
-            "failed": tasks.filter(
-                assignees__id=employee.id,
+            "failed": employee_tasks.filter(
                 deadline__lte=datetime.datetime.now(pytz.utc),
                 is_completed=False
             ),
-            "in progress": tasks.filter(
-                assignees__id=employee.id,
+            "in progress": employee_tasks.filter(
                 is_completed=False,
                 deadline__gt=datetime.datetime.now(pytz.utc)
             )

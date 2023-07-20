@@ -1,7 +1,7 @@
 from services.query_service_base import QueryServiceBase
 
 
-class TaskTypeQueryService(QueryServiceBase):
+class TaskMarkerQueryService(QueryServiceBase):
     VALID_OPTIONS = {
         "quantity_task_desc": lambda queryset: queryset.order_by(
             "-task_count"

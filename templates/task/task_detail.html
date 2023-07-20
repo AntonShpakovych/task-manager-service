@@ -22,10 +22,16 @@
             <ul>
               {% for employee in task.assignees.all %}
                 <li>
-                  <a href="">{{ employee.username }}</a>
+                  <a href="{% url 'employee:employee-detail' pk=employee.id %}">{{ employee.username }}</a>
                 </li>
               {% endfor %}
             </ul>
+            {% if task.tags.all %}
+              <p class="mb-3"><h5>Tags</h5></p>
+                  {% for tag in task.tags.all %}
+                    <a href="{% url 'task:tag-detail' pk=tag.id %}"><i class="fa-solid fa-hashtag">{{ tag.name }}</i></a>
+                  {% endfor %}
+            {% endif %}
             <div class="d-flex align-items-center justify-content-between">
               <div>
                 <button class="btn btn-light">{{ task.task_type }}</button>

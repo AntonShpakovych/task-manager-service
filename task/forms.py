@@ -5,24 +5,10 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
-from task.models import Task, TaskType
+from task.models import Task, TaskType, Tag
 
 
-class TaskNameSearchForm(forms.Form):
-    name = forms.CharField(
-        max_length=25,
-        required=False,
-        label="",
-        widget=forms.TextInput(
-            attrs={
-                "class": "text search-input",
-                "placeholder": "Searching by task name"
-            }
-        )
-    )
-
-
-class TaskTypeNameSearchForm(forms.Form):
+class TaskMarkerNameSearchForm(forms.Form):
     name = forms.CharField(
         max_length=10,
         required=False,
@@ -30,7 +16,7 @@ class TaskTypeNameSearchForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "text search-input",
-                "placeholder": "Searching by task type name"
+                "placeholder": "Searching by name"
             }
         )
     )
@@ -39,6 +25,11 @@ class TaskTypeNameSearchForm(forms.Form):
 class TaskFormCreate(forms.ModelForm):
     assignees = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+    )
+
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
         widget=forms.CheckboxSelectMultiple,
     )
 
@@ -73,3 +64,17 @@ class TaskFormUpdate(TaskFormCreate):
     class Meta(TaskFormCreate.Meta):
         exclude = tuple()
         fields = "__all__"
+
+
+class TaskNameSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=25,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                "class": "text search-input",
+                "placeholder": "Searching by task name"
+            }
+        )
+    )
