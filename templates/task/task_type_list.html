@@ -49,6 +49,7 @@
                         </div>
                       </div>
                       <div class="media align-items-center mt-md-0 mt-3">
+                        <a href="{% url 'task:task-type-detail' pk=type.id %}" class="btn bg-success mr-3">Detail</a>
                         <a href="{% url 'task:task-type-delete' pk=type.id %}" class="btn bg-danger mr-3">Delete</a>
                         <a href="{% url 'task:task-type-update' pk=type.id %}" class="btn bg-success mr-3">Update</a>
                       </div>

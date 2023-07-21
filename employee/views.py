@@ -2,20 +2,24 @@ import datetime
 import pytz
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator
 from django.db.models import Count
 from django.urls import reverse_lazy
 from django.views import generic
 
-from services.position_query_service import PositionQueryService
-from task.models import Task
-
 from employee.forms import (
     EmployeeUsernameSearchForm,
     EmployeeCreateForm,
-    EmployeeUpdateForm, PositionNameSearchForm
+    EmployeeUpdateForm,
 )
-from employee.models import Employee, Position
+from employee.models import (
+    Employee,
+    Position
+)
+
+
+from services.position_query_service import PositionQueryService
+from simple_forms.search_by_name import SearchByNameForm
+from task.models import Task
 
 
 class EmployeeListView(LoginRequiredMixin, generic.ListView):
@@ -99,7 +103,7 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
 
         name = self.request.GET.get("name", "")
-        context["search_form"] = PositionNameSearchForm(
+        context["search_form"] = SearchByNameForm(
             initial={"name": name}
         )
 
@@ -118,7 +122,7 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
                 option=option
             ).run_query()
 
-        form = PositionNameSearchForm(self.request.GET)
+        form = SearchByNameForm(self.request.GET)
 
         if form.is_valid():
             return self.queryset.filter(

@@ -26,6 +26,10 @@
                 </li>
               {% endfor %}
             </ul>
+            <p class="mb-3">
+              <h5>Task Type</h5>
+              <a href="{% url 'task:task-type-detail' pk=task.task_type_id %}">{{ task.task_type }}</a>
+            </p>
             {% if task.tags.all %}
               <p class="mb-3"><h5>Tags</h5></p>
                   {% for tag in task.tags.all %}

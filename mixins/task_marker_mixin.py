@@ -2,15 +2,17 @@ from django.db.models import Count
 from django.views.generic import ListView
 
 from services.task_marker_query_service import TaskMarkerQueryService
-from task.forms import TaskMarkerNameSearchForm
+from simple_forms.search_by_name import SearchByNameForm
 
 
 class TaskMarkerMixin(ListView):
+    """Marker: task_type or tag"""
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
 
         name = self.request.GET.get("name", "")
-        context["search_form"] = TaskMarkerNameSearchForm(
+        context["search_form"] = SearchByNameForm(
             initial={"name": name}
         )
 
@@ -27,7 +29,7 @@ class TaskMarkerMixin(ListView):
                 option=option
             ).run_query()
 
-        form = TaskMarkerNameSearchForm(self.request.GET)
+        form = SearchByNameForm(self.request.GET)
 
         if form.is_valid():
             return queryset.filter(name__icontains=form.cleaned_data["name"])

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -11,10 +12,13 @@ from task.models import (
 from task.forms import (
     TaskFormCreate,
     TaskFormUpdate,
-    TaskNameSearchForm,
 )
 
+from simple_forms.search_by_name import SearchByNameForm
+
 from services.task_query_service import TaskQueryService
+from services.pagination_detail_service import PaginationDetailService
+
 from mixins.task_marker_mixin import TaskMarkerMixin
 
 
@@ -35,7 +39,7 @@ class TaskListView(LoginRequiredMixin, TaskMarkerMixin, generic.ListView):
                 option=option
             ).run_query()
 
-        form = TaskNameSearchForm(self.request.GET)
+        form = SearchByNameForm(self.request.GET)
 
         if form.is_valid():
             return self.queryset.filter(
@@ -90,6 +94,30 @@ class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("task:task-type-list")
 
 
+class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
+    model = TaskType
+    context_object_name = "task_type"
+    template_name = "task/task_type_detail.html"
+
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related("tasks")
+
+
+@login_required
+def task_type_detail(request, pk):
+    task_type_tasks = TaskType.objects.prefetch_related(
+        "tasks"
+    ).get(id=pk).tasks.all()
+
+    context = PaginationDetailService(
+        queryset=task_type_tasks,
+        page_number=request.GET.get("page"),
+        items_per_page=5
+    ).generate_context()
+
+    return render(request, "task/task_type_detail.html", context=context)
+
+
 class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = TaskType
     template_name = "task/task_type_confirm_delete.html"
@@ -118,8 +146,16 @@ class TagDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task:tag-list")
 
 
-class TagDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Tag
+@login_required
+def tag_detail(request, pk):
+    tag_tasks = Tag.objects.prefetch_related(
+        "tasks"
+    ).get(id=pk).tasks.all()
 
-    def get_queryset(self):
-        return super().get_queryset().prefetch_related("tasks")
+    context = PaginationDetailService(
+        queryset=tag_tasks,
+        page_number=request.GET.get("page"),
+        items_per_page=5
+    ).generate_context()
+
+    return render(request, "task/tag_detail.html", context=context)
