@@ -13,19 +13,26 @@
                         <div class="p-3">
                            <h2 class="mb-2 text-white">Sign In</h2>
                            <p>Login to stay connected.</p>
+                            {% if form.non_field_errors   %}
+                              {{ form.non_field_errors   }}
+                            {% endif %}
                            <form action="{% url 'login' %}" method="post">
                              {% csrf_token %}
                               <div class="row">
                                  <div class="col-lg-12">
                                     <div class="floating-label form-group">
+                                        {% if form.username.errors %}
+                                          {{ form.username.errors }}
+                                        {% endif %}
                                        <input class="floating-input form-control" type="text"  name="username" placeholder="Username">
-
                                     </div>
                                  </div>
                                  <div class="col-lg-12">
                                     <div class="floating-label form-group">
+                                        {% if form.password.errors %}
+                                          {{ form.password.errors }}
+                                        {% endif %}
                                        <input class="floating-input form-control" type="password"  name="password" placeholder="Password">
-
                                     </div>
                                  </div>
                               </div>
