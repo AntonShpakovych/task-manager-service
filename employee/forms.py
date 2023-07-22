@@ -11,8 +11,13 @@ class EmployeeCreateForm(UserCreationForm):
             "position", "first_name", "last_name", "email"
         )
         widgets = {
-            "position": forms.RadioSelect()
+            "position": forms.RadioSelect(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["first_name"].required = True
+        self.fields["last_name"].required = True
 
 
 class EmployeeUpdateForm(forms.ModelForm):
@@ -35,4 +40,3 @@ class EmployeeUsernameSearchForm(forms.Form):
             }
         )
     )
-

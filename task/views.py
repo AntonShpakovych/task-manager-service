@@ -12,8 +12,8 @@ from task.models import (
     Tag
 )
 from task.forms import (
-    TaskFormCreate,
-    TaskFormUpdate,
+    TaskCreateForm,
+    TaskUpdateForm,
 )
 
 from simple_forms.search_by_name import SearchByNameForm
@@ -28,7 +28,9 @@ class TaskListView(LoginRequiredMixin, SorterFilterMixin, generic.ListView):
     searching_field = "name"
     form_class = SearchByNameForm
     service_class = TaskQueryService
-    queryset = Task.objects.select_related("task_type").prefetch_related("assignees")
+    queryset = Task.objects.select_related(
+        "task_type"
+    ).prefetch_related("assignees")
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -45,17 +47,27 @@ class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
-    form_class = TaskFormCreate
+    form_class = TaskCreateForm
     success_url = reverse_lazy("task:task-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["is_task_type"] = TaskType.objects.count() >= 1
+        return context
 
 
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Task
-    form_class = TaskFormUpdate
+    form_class = TaskUpdateForm
     success_url = reverse_lazy("task:task-list")
 
 
-class TaskTypeListView(LoginRequiredMixin, SorterFilterMixin, generic.ListView):
+class TaskTypeListView(
+    LoginRequiredMixin,
+    SorterFilterMixin,
+    generic.ListView
+):
     model = TaskType
     template_name = "task/task_type_list.html"
     context_object_name = "task_type_list"

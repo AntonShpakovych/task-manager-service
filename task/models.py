@@ -3,14 +3,14 @@ from django.db import models
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=25, unique=True)
+    name = models.CharField(max_length=40, unique=True)
 
     def __str__(self):
         return self.name
 
 
 class TaskType(models.Model):
-    name = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=30, unique=True)
 
     def __str__(self) -> str:
         return self.name
@@ -25,7 +25,7 @@ class Task(models.Model):
 
     name = models.CharField(max_length=25)
     description = models.TextField()
-    deadline = models.DateTimeField()
+    deadline = models.DateField()
     is_completed = models.BooleanField(default=False)
     priority = models.IntegerField(
         choices=PRIORITY_CHOICES,

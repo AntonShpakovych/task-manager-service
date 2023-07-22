@@ -29,7 +29,10 @@ class SorterFilterMixin(ListView):
         form = self.form_class(self.request.GET)
 
         if form.is_valid():
-            search_filter_query = {f"{self.searching_field}__icontains": form.cleaned_data[self.searching_field]}
+            lookup = f"{self.searching_field}__icontains"
+            search_filter_query = {
+                lookup: form.cleaned_data[self.searching_field]
+            }
             return queryset.filter(**search_filter_query)
 
         return queryset

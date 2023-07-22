@@ -17,8 +17,6 @@ class Employee(AbstractUser):
         on_delete=models.CASCADE,
         related_name="employees",
     )
-    objects = CustomUserManager()
+    email = models.EmailField(unique=True)
 
-    class Meta:
-        verbose_name = "employee"
-        verbose_name_plural = "employees"
+    objects = CustomUserManager()

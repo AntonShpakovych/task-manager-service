@@ -23,7 +23,11 @@ from services.position_query_service import PositionQueryService
 from simple_forms.search_by_name import SearchByNameForm
 
 
-class EmployeeListView(LoginRequiredMixin, SorterFilterMixin, generic.ListView):
+class EmployeeListView(
+    LoginRequiredMixin,
+    SorterFilterMixin,
+    generic.ListView
+):
     model = Employee
     paginate_by = 6
     form_class = EmployeeUsernameSearchForm
@@ -78,7 +82,11 @@ class EmployeeDetailView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class PositionListView(LoginRequiredMixin, SorterFilterMixin, generic.ListView):
+class PositionListView(
+    LoginRequiredMixin,
+    SorterFilterMixin,
+    generic.ListView
+):
     model = Position
     queryset = Position.objects.annotate(employee_count=Count("employees"))
     form_class = SearchByNameForm
