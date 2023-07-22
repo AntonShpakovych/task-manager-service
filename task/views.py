@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
+from services.task_marker_query_service import TaskMarkerQueryService
 from task.models import (
     Task,
     TaskType,
@@ -15,38 +17,18 @@ from task.forms import (
 )
 
 from simple_forms.search_by_name import SearchByNameForm
-
 from services.task_query_service import TaskQueryService
 from services.pagination_detail_service import PaginationDetailService
+from mixins.task_marker_mixin import SorterFilterMixin
 
-from mixins.task_marker_mixin import TaskMarkerMixin
 
-
-class TaskListView(LoginRequiredMixin, TaskMarkerMixin, generic.ListView):
+class TaskListView(LoginRequiredMixin, SorterFilterMixin, generic.ListView):
     model = Task
     paginate_by = 6
-
-    def get_queryset(self):
-        self.queryset = Task.objects.select_related(
-            "task_type"
-        ).prefetch_related("assignees")
-
-        option = self.request.GET.get("sort")
-
-        if TaskQueryService.is_option_valid(option):
-            self.queryset = TaskQueryService(
-                queryset=self.queryset,
-                option=option
-            ).run_query()
-
-        form = SearchByNameForm(self.request.GET)
-
-        if form.is_valid():
-            return self.queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
-
-        return self.queryset
+    searching_field = "name"
+    form_class = SearchByNameForm
+    service_class = TaskQueryService
+    queryset = Task.objects.select_related("task_type").prefetch_related("assignees")
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -73,11 +55,15 @@ class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("task:task-list")
 
 
-class TaskTypeListView(LoginRequiredMixin, TaskMarkerMixin, generic.ListView):
+class TaskTypeListView(LoginRequiredMixin, SorterFilterMixin, generic.ListView):
     model = TaskType
     template_name = "task/task_type_list.html"
     context_object_name = "task_type_list"
     paginate_by = 5
+    searching_field = "name"
+    form_class = SearchByNameForm
+    service_class = TaskMarkerQueryService
+    queryset = TaskType.objects.annotate(task_count=Count("tasks"))
 
 
 class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
@@ -124,9 +110,13 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task:task-type-list")
 
 
-class TagListView(LoginRequiredMixin, TaskMarkerMixin, generic.ListView):
+class TagListView(LoginRequiredMixin, SorterFilterMixin, generic.ListView):
     model = Tag
     paginate_by = 5
+    searching_field = "name"
+    form_class = SearchByNameForm
+    service_class = TaskMarkerQueryService
+    queryset = Tag.objects.annotate(task_count=Count("tasks"))
 
 
 class TagCreateView(LoginRequiredMixin, generic.CreateView):

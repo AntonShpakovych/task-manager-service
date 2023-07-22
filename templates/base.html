@@ -19,10 +19,8 @@
       <link rel="stylesheet" href="{% static 'vendor/tui-calendar/tui-date-picker/dist/tui-date-picker.css' %}">
       <link rel="stylesheet" href="{% static 'vendor/tui-calendar/tui-time-picker/dist/tui-time-picker.css' %}">
   </head>
-  <body class="  ">
-    {% if request.path == "/accounts/login/" %}
-      {% block login %} {% endblock %}
-    {% else %}
+  <body>
+    {% if user.is_authenticated %}
       {% include 'includes/sidebar.html' %}
       <div class="content-page">
         <div class="container-fluid">
@@ -33,6 +31,8 @@
         </div>
       </div>
       {% include 'includes/footer.html' %}
+    {% else %}
+      {% block login %} {% endblock %}
     {% endif %}
     <script src="{% static 'js/backend-bundle.min.js' %}"></script>
     <script src="{% static 'js/app.js' %}"></script>

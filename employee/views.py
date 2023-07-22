@@ -6,6 +6,8 @@ from django.db.models import Count
 from django.urls import reverse_lazy
 from django.views import generic
 
+from task.models import Task
+
 from employee.forms import (
     EmployeeUsernameSearchForm,
     EmployeeCreateForm,
@@ -16,37 +18,17 @@ from employee.models import (
     Position
 )
 
-
+from mixins.task_marker_mixin import SorterFilterMixin
 from services.position_query_service import PositionQueryService
 from simple_forms.search_by_name import SearchByNameForm
-from task.models import Task
 
 
-class EmployeeListView(LoginRequiredMixin, generic.ListView):
+class EmployeeListView(LoginRequiredMixin, SorterFilterMixin, generic.ListView):
     model = Employee
     paginate_by = 6
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        username = self.request.GET.get("username", "")
-        context["search_form"] = EmployeeUsernameSearchForm(
-            initial={"username": username}
-        )
-
-        return context
-
-    def get_queryset(self):
-        self.queryset = Employee.objects.select_related("position")
-
-        form = EmployeeUsernameSearchForm(self.request.GET)
-
-        if form.is_valid():
-            return self.queryset.filter(
-                username__icontains=form.cleaned_data["username"]
-            )
-
-        return self.queryset
+    form_class = EmployeeUsernameSearchForm
+    searching_field = "username"
+    queryset = Employee.objects.select_related("position")
 
 
 class EmployeeCreateView(LoginRequiredMixin, generic.CreateView):
@@ -96,40 +78,12 @@ class EmployeeDetailView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class PositionListView(LoginRequiredMixin, generic.ListView):
+class PositionListView(LoginRequiredMixin, SorterFilterMixin, generic.ListView):
     model = Position
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        name = self.request.GET.get("name", "")
-        context["search_form"] = SearchByNameForm(
-            initial={"name": name}
-        )
-
-        return context
-
-    def get_queryset(self):
-        self.queryset = Position.objects.annotate(
-            employee_count=Count("employees")
-        )
-
-        option = self.request.GET.get("sort")
-
-        if PositionQueryService.is_option_valid(option):
-            self.queryset = PositionQueryService(
-                queryset=self.queryset,
-                option=option
-            ).run_query()
-
-        form = SearchByNameForm(self.request.GET)
-
-        if form.is_valid():
-            return self.queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
-
-        return self.queryset
+    queryset = Position.objects.annotate(employee_count=Count("employees"))
+    form_class = SearchByNameForm
+    searching_field = "name"
+    service_class = PositionQueryService
 
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):

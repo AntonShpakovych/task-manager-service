@@ -30,7 +30,7 @@ class TaskFormCreate(forms.ModelForm):
     )
 
     priority = forms.ChoiceField(
-        widget=forms.RadioSelect,
+        widget=forms.RadioSelect(attrs={"class": "formbold-radio"}),
         choices=Task.PRIORITY_CHOICES
     )
 

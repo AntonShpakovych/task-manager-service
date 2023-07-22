@@ -1,37 +1,35 @@
-from django.db.models import Count
 from django.views.generic import ListView
 
-from services.task_marker_query_service import TaskMarkerQueryService
-from simple_forms.search_by_name import SearchByNameForm
 
-
-class TaskMarkerMixin(ListView):
-    """Marker: task_type or tag"""
+class SorterFilterMixin(ListView):
+    searching_field = None
+    form_class = None
+    service_class = None
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        name = self.request.GET.get("name", "")
-        context["search_form"] = SearchByNameForm(
-            initial={"name": name}
+        search_param = self.request.GET.get(self.searching_field, "")
+        context["search_form"] = self.form_class(
+            initial={f"{self.searching_field}": search_param}
         )
 
         return context
 
     def get_queryset(self):
-        queryset = super().get_queryset().annotate(task_count=Count("tasks"))
+        queryset = self.queryset
 
         option = self.request.GET.get("sort")
 
-        if TaskMarkerQueryService.is_option_valid(option):
-            queryset = TaskMarkerQueryService(
+        if self.service_class and self.service_class.is_option_valid(option):
+            queryset = self.service_class(
                 queryset=queryset,
                 option=option
             ).run_query()
 
-        form = SearchByNameForm(self.request.GET)
+        form = self.form_class(self.request.GET)
 
         if form.is_valid():
-            return queryset.filter(name__icontains=form.cleaned_data["name"])
+            search_filter_query = {f"{self.searching_field}__icontains": form.cleaned_data[self.searching_field]}
+            return queryset.filter(**search_filter_query)
 
         return queryset
-
