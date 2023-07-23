@@ -17,6 +17,10 @@ venv\Scripts\activate
 pip install -r requirements.txt
 python manage.py runserver
 ```
+## Test user
+
+login: Tomzerw              
+password: Tompassword123q!
 
 ## Demo
 ![Website Interface](demo.png)
