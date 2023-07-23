@@ -1,4 +1,4 @@
-import datetime
+from datetime import date, timedelta
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
@@ -16,7 +16,7 @@ class SorterFilterMixinTest(TestCase):
             name="task_with_tag",
             priority=2,
             description="some desc",
-            deadline=datetime.datetime.now() + datetime.timedelta(days=1),
+            deadline=date.today() - timedelta(1),
             task_type=TaskType.objects.create(name="Development"),
         )
         self.client = Client()
