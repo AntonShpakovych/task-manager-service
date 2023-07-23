@@ -50,10 +50,10 @@
                 <div class="card">
                   <div class="card-body " style="position: relative">
                     <h5 class="mb-3">{{ task.name|truncatechars:10 }}</h5>
-                    <p class="mb-3"><i class="las la-calendar-check mr-2"></i>Opened: {{ task.created_at }}</p>
-                    <p class="mb-3"><i class="las la-calendar-check mr-2"></i>Deadline: {{ task.deadline }}</p>
-                    <p class="mb-3"><i class="las la-calendar-check mr-2"></i>Priority: {{ task.get_priority_display }}</p>
-                    <p class="mb-3"><i class="las la-calendar-check mr-2"></i>Completed: {{ task.is_completed|yesno:"Yes,No" }}</p>
+                    <p class="mb-3"><i class="fa-regular fa-circle-dot"></i> Opened: {{ task.created_at }}</p>
+                    <p class="mb-3"><i class="fa-regular fa-circle-dot"></i> Deadline: {{ task.deadline }}</p>
+                    <p class="mb-3"><i class="fa-regular fa-circle-dot"></i> Priority: {{ task.get_priority_display }}</p>
+                    <p class="mb-3"><i class="fa-regular fa-circle-dot"></i> Completed: {{ task.is_completed|yesno:"Yes,No" }}</p>
 
                     <div class="d-flex align-items-center justify-content-between">
                       <div>
