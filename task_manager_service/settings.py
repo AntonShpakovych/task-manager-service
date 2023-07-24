@@ -6,10 +6,10 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
-SECRET_KEY = os.urandom(32)
-# DEBUG = os.environ["DJANGO_DEBUG"]
-DEBUG = True
+SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
+
+DEBUG = os.environ["DJANGO_DEBUG"]
+
 ALLOWED_HOSTS = ["127.0.0.1", "task-manager-stsc.onrender.com"]
 
 INTERNAL_IPS = [
