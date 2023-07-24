@@ -19,10 +19,10 @@ from task.forms import (
 from simple_forms.search_by_name import SearchByNameForm
 from services.task_query_service import TaskQueryService
 from services.pagination_detail_service import PaginationDetailService
-from mixins.task_marker_mixin import SorterFilterMixin
+from custom_generic.sort_filter_search_list_view import SorterFilterListView
 
 
-class TaskListView(LoginRequiredMixin, SorterFilterMixin, generic.ListView):
+class TaskListView(LoginRequiredMixin, SorterFilterListView):
     model = Task
     paginate_by = 6
     searching_field = "name"
@@ -63,11 +63,7 @@ class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("task:task-list")
 
 
-class TaskTypeListView(
-    LoginRequiredMixin,
-    SorterFilterMixin,
-    generic.ListView
-):
+class TaskTypeListView(LoginRequiredMixin, SorterFilterListView):
     model = TaskType
     template_name = "task/task_type_list.html"
     context_object_name = "task_type_list"
@@ -122,7 +118,7 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task:task-type-list")
 
 
-class TagListView(LoginRequiredMixin, SorterFilterMixin, generic.ListView):
+class TagListView(LoginRequiredMixin, SorterFilterListView):
     model = Tag
     paginate_by = 5
     searching_field = "name"

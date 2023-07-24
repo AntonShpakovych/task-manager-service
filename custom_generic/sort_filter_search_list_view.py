@@ -1,7 +1,7 @@
 from django.views.generic import ListView
 
 
-class SorterFilterMixin(ListView):
+class SorterFilterListView(ListView):
     searching_field = None
     form_class = None
     service_class = None

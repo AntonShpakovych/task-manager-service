@@ -18,16 +18,12 @@ from employee.models import (
     Position
 )
 
-from mixins.task_marker_mixin import SorterFilterMixin
+from custom_generic.sort_filter_search_list_view import SorterFilterListView
 from services.position_query_service import PositionQueryService
 from simple_forms.search_by_name import SearchByNameForm
 
 
-class EmployeeListView(
-    LoginRequiredMixin,
-    SorterFilterMixin,
-    generic.ListView
-):
+class EmployeeListView(LoginRequiredMixin, SorterFilterListView):
     model = Employee
     paginate_by = 6
     form_class = EmployeeUsernameSearchForm
@@ -82,11 +78,7 @@ class EmployeeDetailView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class PositionListView(
-    LoginRequiredMixin,
-    SorterFilterMixin,
-    generic.ListView
-):
+class PositionListView(LoginRequiredMixin, SorterFilterListView):
     model = Position
     queryset = Position.objects.annotate(employee_count=Count("employees"))
     form_class = SearchByNameForm
