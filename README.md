@@ -12,6 +12,11 @@ Django pet-project for managing tasks, implemented in simple way without permiss
 ## Check it out!
 [Task manager project deployed to Render](https://task-manager-stsc.onrender.com/tasks/)
 
+    Test user:
+    
+    login: Tomzerw              
+    password: Tompassword123q!
+
 ## Installation
 
 Python3 must be already installed
@@ -24,6 +29,7 @@ venv\Scripts\activate
 pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
+python manage.py createsuperuser
 python manage.py collectstatic
 python manage.py runserver
 
@@ -32,10 +38,6 @@ You should create .env:
     - DJANGO_DEBUG
     - DATABASE_URL
 ```
-## Test user
-
-login: Tomzerw              
-password: Tompassword123q!
 
 ## Demo
 ![Website Interface](demo.png)
