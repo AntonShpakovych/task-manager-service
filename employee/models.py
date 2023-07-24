@@ -7,6 +7,9 @@ from employee.managers import CustomUserManager
 class Position(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self) -> str:
         return self.name
 
@@ -20,3 +23,6 @@ class Employee(AbstractUser):
     email = models.EmailField(unique=True)
 
     objects = CustomUserManager()
+
+    class Meta:
+        ordering = ["position"]

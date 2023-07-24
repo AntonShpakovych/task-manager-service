@@ -71,7 +71,7 @@ class TaskTypeListView(LoginRequiredMixin, SorterFilterSearchListView):
     searching_field = "name"
     form_class = SearchByNameForm
     service_class = TaskMarkerQueryService
-    queryset = TaskType.objects.annotate(task_count=Count("tasks"))
+    queryset = TaskType.objects.annotate(task_count=Count("tasks")).order_by("task_count")
 
 
 class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
@@ -124,7 +124,7 @@ class TagListView(LoginRequiredMixin, SorterFilterSearchListView):
     searching_field = "name"
     form_class = SearchByNameForm
     service_class = TaskMarkerQueryService
-    queryset = Tag.objects.annotate(task_count=Count("tasks"))
+    queryset = Tag.objects.annotate(task_count=Count("tasks")).order_by("task_count")
 
 
 class TagCreateView(LoginRequiredMixin, generic.CreateView):

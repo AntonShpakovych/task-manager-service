@@ -5,12 +5,18 @@ from django.db import models
 class Tag(models.Model):
     name = models.CharField(max_length=40, unique=True)
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 
 
 class TaskType(models.Model):
     name = models.CharField(max_length=30, unique=True)
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self) -> str:
         return self.name
@@ -22,6 +28,9 @@ class Task(models.Model):
         (1, "Medium"),
         (2, "High"),
     )
+
+    class Meta:
+        ordering = ["deadline"]
 
     name = models.CharField(max_length=25)
     description = models.TextField()
