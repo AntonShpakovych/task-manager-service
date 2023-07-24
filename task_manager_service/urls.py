@@ -5,6 +5,8 @@ from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
 
+handler404 = 'task_manager_service.views.handler_404'
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
