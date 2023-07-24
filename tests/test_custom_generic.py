@@ -10,7 +10,7 @@ from task.models import Tag, Task, TaskType
 from simple_forms.search_by_name import SearchByNameForm
 
 
-class SorterFilterMixinTest(TestCase):
+class SorterFilterListView(TestCase):
     def setUp(self):
         self.task = Task.objects.create(
             name="task_with_tag",
