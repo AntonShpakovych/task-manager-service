@@ -1,0 +1,46 @@
+{% if user.is_authenticated %}
+  <div class="iq-sidebar  sidebar-default ">
+    <div class="iq-sidebar-logo d-flex align-items-center">
+      <a href="{% url 'task:task-list' %}" class="header-logo">
+        <h3 class="logo-title light-logo">Task manager</h3>
+      </a>
+      <div class="iq-menu-bt-sidebar ml-0">
+      </div>
+    </div>
+    <div class="data-scrollbar" data-scroll="1">
+      <nav class="iq-sidebar-menu">
+        <ul id="iq-sidebar-toggle" class="iq-menu">
+          <li class="">
+            <a href="{% url 'task:task-list' %}" class="svg-icon">
+              <svg width="24" stroke-width="1.5" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M9 6L20 6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/> <path d="M3.80002 5.79999L4.60002 6.59998L6.60001 4.59999" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/> <path d="M3.80002 11.8L4.60002 12.6L6.60001 10.6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/> <path d="M3.80002 17.8L4.60002 18.6L6.60001 16.6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/> <path d="M9 12L20 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/> <path d="M9 18L20 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/> </svg>
+              <span class="ml-4">Tasks</span>
+            </a>
+          </li>
+          <li class="">
+            <a href="{% url 'employee:employee-list' %}" class="icon">
+              <i class="fa-solid fa-users"></i>
+              <span class="ml-4">Employees</span>
+            </a>
+          </li>
+          <li class="">
+            <a href="{% url 'logout' %}" class="icon">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span class="ml-4">Log out</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="pt-5 pb-2"></div>
+    </div>
+  </div>
+  <div class="iq-top-navbar">
+      <div class="iq-navbar-custom">
+          <nav class="navbar navbar-expand-lg navbar-light p-0">
+              <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
+                  <i class="ri-menu-line wrapper-menu"></i>
+              </div>
+          </nav>
+
+      </div>
+  </div>
+{% endif %}
